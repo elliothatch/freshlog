@@ -1,0 +1,45 @@
+{
+    "name": "freshlog",
+    "version": "0.1.0",
+    "description": "simple node logging framework",
+    "main": "build/index.js",
+    "types": "declarations/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "clean": "node scripts/clean.js",
+        "docs": "typedoc --out docs/ src/",
+        "test": "jest"
+    },
+    "author": {
+        "name": "Elliot Hatch",
+        "email": "elliot.hatch@gmail.com"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@types/jest": "^23.3.2",
+        "@types/json-stringify-safe": "^5.0.0",
+        "fs-extra": "^7.0.0",
+        "gulp": "^3.9.1",
+        "jest": "^23.6.0",
+        "ts-jest": "^23.1.4",
+        "typedoc": "^0.12.0",
+        "typescript": "^3.0.3"
+    },
+    "dependencies": {
+        "json-stringify-safe": "^5.0.1"
+    },
+    "jest": {
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        },
+        "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.(tsx?|ts?)$",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js",
+            "jsx",
+            "json",
+            "node"
+        ]
+    }
+}
