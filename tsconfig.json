@@ -10,8 +10,9 @@
 
     "strict": true,
 
-    "removeComments": true,
-    "preserveConstEnums": true
+    "experimentalDecorators": true,
+    "preserveConstEnums": true,
+    "removeComments": true
   },
   "include": [
     "src/**/*"
