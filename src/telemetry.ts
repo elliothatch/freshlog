@@ -32,7 +32,7 @@ import { tap } from 'rxjs/operators';
 import { Log } from './index';
 
 /** mutate this object to change global settings */
-export const GlobalTelemetryOptions: { enabled: boolean; defaultRecordOptions: Record.Options; } = {
+export const GlobalOptions: { enabled: boolean; defaultRecordOptions: Record.Options; } = {
     defaultRecordOptions: {
         args: false,
         returnValue: false,
@@ -61,13 +61,13 @@ export interface Reading {
 
 /** Class method decorator, records execution time */
 function Record(options?: Partial<Record.Options>) {
-    const opts = Object.assign(Object.create(GlobalTelemetryOptions.defaultRecordOptions), options);
+    const opts = Object.assign(Object.create(GlobalOptions.defaultRecordOptions), options);
     return (proto: any, propertyKey: string, descriptor: any) => {
         const name = opts.name || [proto.constructor.name, propertyKey].join('.');
 
         const originalFunc = descriptor.value;
         descriptor.value = function(...args: any[]) {
-            if(!GlobalTelemetryOptions.enabled) {
+            if(!GlobalOptions.enabled) {
                 return originalFunc.apply(this, arguments);
             }
 

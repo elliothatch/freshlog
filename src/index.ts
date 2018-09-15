@@ -8,6 +8,8 @@ import { Target } from './target';
 
 import { Logger } from './logger';
 
+import * as Telemetry from './telemetry';
+
 /**
  * Tried to log at a level that hasn't been configured. See logger.addHandler.
  */
@@ -19,4 +21,4 @@ export class InvalidLoggerError extends Error {
 }
 
 const Log = new Logger({});
-export { Log, Logger, Middleware, Serializer, Target };
+export { Log, Logger, Middleware, Serializer, Target, Telemetry };
