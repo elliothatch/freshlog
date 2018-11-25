@@ -44,7 +44,7 @@ class Logger {
      */
     public handlers: Map<string, Logger.Handler>;
 
-    constructor(opts: Partial<Logger.Options>) {
+    constructor(opts?: Partial<Logger.Options>) {
         const options: Logger.Options = Object.assign({}, Logger.defaultOptions, opts);
 
         this.handlers = new Map();
@@ -159,9 +159,9 @@ class Logger {
      * @param handler - handler options. missing fields are populated by Logger.defaultHandler
      * @returns fully initialized log handler
      */
-    public addHandler(name: string, handler: Partial<Logger.Handler>): Logger.Handler {
+    public addHandler(name: string, handler?: Partial<Logger.Handler>): Logger.Handler {
         const h: Logger.Handler = Object.assign({}, Logger.defaultHandler, handler);
-        if(!handler.middleware) {
+        if(!handler || !handler.middleware) {
             h.middleware = Logger.defaultOptions.middleware.map(mw => mw.mw);
         }
         this.handlers.set(name, h);
