@@ -1,6 +1,6 @@
 {
     "name": "freshlog",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "simple node logging framework",
     "main": "build/index.js",
     "types": "declarations/index.d.ts",
