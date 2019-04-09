@@ -52,13 +52,19 @@ Log.log('greetings', 'hello');
 
 ## Build
 ```
-yarn install
+yarn
 yarn build
 ```
 
 ## Test
 ```
 yarn test
+```
+
+## Publish
+```
+yarn version
+yarn publish
 ```
 
 ## Generate Documentation

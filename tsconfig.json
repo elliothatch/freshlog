@@ -11,8 +11,7 @@
     "strict": true,
 
     "experimentalDecorators": true,
-    "preserveConstEnums": true,
-    "removeComments": true
+    "preserveConstEnums": true
   },
   "include": [
     "src/**/*"

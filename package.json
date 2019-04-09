@@ -8,7 +8,10 @@
         "build": "tsc",
         "clean": "node scripts/clean.js",
         "docs": "typedoc --out docs/ src/",
-        "test": "jest"
+        "test": "jest",
+
+        "preversion": "yarn build && yarn test",
+        "postversion": "git push --tags"
     },
     "author": {
         "name": "Elliot Hatch",
