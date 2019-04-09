@@ -1,6 +1,6 @@
 {
     "name": "freshlog",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "simple node logging framework",
     "main": "build/index.js",
     "types": "declarations/index.d.ts",
@@ -9,7 +9,6 @@
         "clean": "node scripts/clean.js",
         "docs": "typedoc --out docs/ src/",
         "test": "jest",
-
         "preversion": "yarn build && yarn test",
         "postversion": "git push --tags"
     },
