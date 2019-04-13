@@ -1,4 +1,6 @@
-import { Logger, Middleware } from '../src';
+import { map } from 'rxjs/operators';
+
+import { Logger, Middleware, Target } from '../src';
 
 //TODO: test adding new level, custom middleware
 let logs: string[] = [];
@@ -64,5 +66,24 @@ describe('middleware', () => {
         const data = JSON.parse(logs[0]);
         expect(data).toMatchObject({level: 'info', message: 'a', error: {message: 'broken'}});
         expect(data.error.stack).toBeDefined();
+    });
+});
+
+describe('target', () => {
+    describe('subscriber', () => {
+        test('notifies observable', (done) => {
+            const {observable, target} = Target.Subscriber('test subscriber');
+            const logger = new Logger({target, middleware: []});
+
+            const result = observable.subscribe({
+                next: ((data) => {
+                    expect(JSON.parse(data)).toEqual({level: 'info', message: 'a'});
+                    done();
+                }),
+                error: (error) => done(error)
+            });
+
+            logger.info('a');
+        });
     });
 });
