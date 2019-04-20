@@ -1,7 +1,7 @@
 import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Logger, Middleware, Target } from '../src';
+import { Logger, Middleware, Serializer, Target } from '../src';
 
 //TODO: test adding new level, custom middleware
 let logs: string[] = [];
@@ -112,6 +112,17 @@ describe('target', () => {
             });
 
             logger.info('b');
+        });
+    });
+});
+
+describe('serializer', () => {
+    describe('identity', () => {
+        test('returns object as is', () => {
+            const logger = new Logger({target, middleware: [], serializer: Serializer.identity});
+            logger.info('hello');
+            expect(logs.length).toBe(1);
+            expect(logs[0]).toEqual({level: 'info', message: 'hello'});
         });
     });
 });

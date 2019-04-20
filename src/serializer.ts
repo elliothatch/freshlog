@@ -13,5 +13,11 @@ export const Serializer = {
         serialize(data: any): string {
             return JsonStringifySafe(data);
         }
+    },
+    identity: {
+        name: 'identity',
+        serialize(data: any): string {
+            return data;
+        }
     }
 };
