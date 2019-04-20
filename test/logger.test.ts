@@ -1,3 +1,4 @@
+import { ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Logger, Middleware, Target } from '../src';
@@ -70,20 +71,47 @@ describe('middleware', () => {
 });
 
 describe('target', () => {
-    describe('subscriber', () => {
+    describe('observable', () => {
         test('notifies observable', (done) => {
-            const {observable, target} = Target.Subscriber('test subscriber');
+            const {observable, target} = Target.Observable('test observable');
             const logger = new Logger({target, middleware: []});
+
+            logger.info('a');
 
             const result = observable.subscribe({
                 next: ((data) => {
-                    expect(JSON.parse(data)).toEqual({level: 'info', message: 'a'});
+                    // only expect log after we've subscribed
+                    expect(JSON.parse(data)).toEqual({level: 'info', message: 'b'});
                     done();
                 }),
                 error: (error) => done(error)
             });
 
+            logger.info('b');
+        });
+
+        test('supports custom subject', (done) => {
+            const {observable, target} = Target.Observable('test replay observable', new ReplaySubject());
+            const logger = new Logger({target, middleware: []});
+
             logger.info('a');
+
+            let i = 0;
+            const result = observable.subscribe({
+                next: ((data) => {
+                    if(i === 0) {
+                        expect(JSON.parse(data)).toEqual({level: 'info', message: 'a'});
+                    }
+                    else {
+                        expect(JSON.parse(data)).toEqual({level: 'info', message: 'b'});
+                        done();
+                    }
+                    i++;
+                }),
+                error: (error) => done(error)
+            });
+
+            logger.info('b');
         });
     });
 });

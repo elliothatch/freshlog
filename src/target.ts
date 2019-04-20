@@ -1,4 +1,4 @@
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 /** Writes serialized log (e.g. json) to the target (e.g. stdout) */
 export interface Target {
@@ -22,22 +22,21 @@ export namespace Target {
         }
     };
 
-    /** Creates a target that emits logs as observable events
+    /** Creates a target that emits logs as observable events, using a Subject
+     * @param name - name of the target. Defaults to 'observable'
+     * @param subject - the Subject to use to emit observable events. If not provided, creates a standard Subject. E.g. you can pass a ReplaySubject if you need to replay values with a specific buffer size
      * @returns object containing the target and the observable the target will emit to */
-    export function Subscriber(name: string): {observable: Observable<any>, target: Target} {
-        let targetSubscriber: Subscriber<any>;
-        const observable = new Observable((subscriber) => {
-            targetSubscriber = subscriber;
-        });
+    export function Observable(name?: string, subject?: Subject<any>): {observable: Observable<any>, target: Target} {
+        if(!subject) {
+            subject = new Subject();
+        }
 
         return {
-            observable,
+            observable: subject,
             target: {
-                name,
+                name: name || 'observable',
                 write: (serializedData) => {
-                    if(targetSubscriber) {
-                        targetSubscriber.next(serializedData)
-                    }
+                    subject!.next(serializedData);
                 }
             }
         };
