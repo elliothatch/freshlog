@@ -68,6 +68,16 @@ describe('middleware', () => {
         expect(data).toMatchObject({level: 'info', message: 'a', error: {message: 'broken'}});
         expect(data.error.stack).toBeDefined();
     });
+
+    test('error doesn\'t throw on null property', () => {
+        const logger = new Logger({target, middleware: [{mw: Middleware.error, levels: true}]});
+
+        logger.info('a', {error: null});
+
+        expect(logs.length).toBe(1);
+        const data = JSON.parse(logs[0]);
+        expect(data).toMatchObject({level: 'info', message: 'a', error: null});
+    });
 });
 
 describe('target', () => {

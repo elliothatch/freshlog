@@ -8,7 +8,7 @@ export const Middleware = {
     timestamp: <T extends object>(data: T) => Object.assign(data, {timestamp: new Date().toISOString()}),
     /** make 'message' and 'stack' enumerable on errors, add error type. recursive */
     error: <T extends object>(data: T) => {
-        if(typeof data !== 'object') {
+        if (typeof data !== 'object' || !data) {
             return data;
         }
 
