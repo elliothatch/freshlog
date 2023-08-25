@@ -17,7 +17,16 @@ export const Middleware = {
         if(data instanceof Error) {
             Object.defineProperty(data, 'message', {enumerable: true});
             Object.defineProperty(data, 'stack', {enumerable: true});
-            return Object.assign(data, {errorType: data.constructor.name});
+            Object.assign(data, {errorType: data.constructor.name});
+        }
+
+        if(data instanceof AggregateError) {
+            Object.defineProperty(data, 'errors', {enumerable: true});
+            for(let i = 0; i < data.errors.length; i++) {
+                Object.defineProperty(data.errors[i], 'message', {enumerable: true});
+                Object.defineProperty(data.errors[i], 'stack', {enumerable: true});
+                Object.assign(data.errors[i], {errorType: data.errors[i].constructor.name});
+            }
         }
 
         return data;

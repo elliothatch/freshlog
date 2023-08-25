@@ -78,6 +78,17 @@ describe('middleware', () => {
         const data = JSON.parse(logs[0]);
         expect(data).toMatchObject({level: 'info', message: 'a', error: null});
     });
+
+    test('AggregateError lists all errors', () => {
+        const logger = new Logger({target, middleware: [{mw: Middleware.error, levels: true}]});
+
+        logger.info('a', {error: new AggregateError([new Error('broken1'), new Error('broken2'), new Error('broken3')], 'multiple broken')});
+
+        expect(logs.length).toBe(1);
+        const data = JSON.parse(logs[0]);
+        expect(data).toMatchObject({level: 'info', message: 'a', error: {message: 'multiple broken', errors: [{message: 'broken1'},{message: 'broken2'},{message: 'broken3'}]}});
+        expect(data.error.stack).toBeDefined();
+    });
 });
 
 describe('target', () => {
@@ -101,7 +112,7 @@ describe('target', () => {
         });
 
         test('supports custom subject', (done) => {
-            const {observable, target} = Target.Observable('test replay observable', new ReplaySubject());
+            const {observable, target} = Target.Observable<string>('test replay observable', new ReplaySubject());
             const logger = new Logger({target, middleware: []});
 
             logger.info('a');
